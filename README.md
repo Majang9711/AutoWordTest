@@ -2,12 +2,9 @@
 AutoWordTest
 =====
 
-[![Build status](https://github.com/NiclasOlofsson/MiNET/actions/workflows/dotnetcore.yml/badge.svg)](https://github.com/NiclasOlofsson/MiNET/actions/workflows/dotnetcore.yml)
-[![NuGet Version and Downloads count](https://buildstats.info/nuget/MiNET)](https://www.nuget.org/packages/MiNET) 
-
 ## What is this?
 
-A basic Minecraft Pocket Edition (MCPE) server written in C#. Current goal is to create a server that has enterprise performance for large Minecraft multi-user gaming providers. Current servers handle 10-100 users per instance, the aim with MiNET is to deal with thousands. Priority is also to create interfaces, and to some extend, ready-made implementations of the most basic enterprise game-management features (users, worlds, etc.). With all likelyhood, MiNET will emerge into a Microsoft Cloud ready product.
+It is an automatic English word test paper developed by Python.
 
 As part of the project, I also deliver an up-to-date [automatically generated MCPE Protocol Specification](/src/MiNET/MiNET/Net/MCPE%20Protocol%20Documentation.md). This is a synery of that large parts of the communication code being generated using XML and T4 templates.
 
