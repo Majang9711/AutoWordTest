@@ -14,6 +14,11 @@ This is because I decided to create a program that makes a word test paper accor
 
 ## Getting started
 
+1. Make the necessary word file like word.xls
+2. Download the software "WordTest" that fits your operating system.
+3. Execute.
+4. Do what the program tells you to do.
+
 
 
 
