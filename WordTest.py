@@ -11,7 +11,7 @@
 import xlrd
 import xlwt
 import random
-
+import tkinter as tk #GUI
 
 ''' 엑셀 셀 스타일 '''
 ValueStyle = xlwt.easyxf(
@@ -24,18 +24,17 @@ subTitleStyle = xlwt.easyxf('font: height 0')
 LangStyle = xlwt.easyxf(
         'border: top thin, right thin, bottom thin, left thin; pattern: pattern solid, fore_color gray25; align: horizontal center; font: height 440')
 
+stateText = "** 파일 경로를 제대로 작성해주세요!"
 
 def Main():
-    print("=== 자동 단어시험지 생성기 ===")
-    WordFileArea = input("사용할 단어파일의 경로를 입력해주세요 > ")
-    WordCreateFileArea = input("생성될 단어 시험지 파일의 이름을 입력해주세요 > ")
+    WordFileArea = WordOldNameEntry.get() #단어 파일 경로 및 이름
+    WordCreateFileArea = WordNewNameEntry.get() #저장할 단어 파일 경로와 이름
     wb = xlrd.open_workbook(WordFileArea)  # 파일 읽기
-    sheets = wb.sheets()
-    mode = int(input("=== 출력할 모드를 선택해주세요 === \n1. 영어빈칸 + 한글해석 \n2. 영어해석 + 한글빈캄 \n3. 첫글자 영어 + 한글해석\n4. 1+2 섞어서\n해당 번호를 입력해주세요 > "))
-    WordCount = int(input("단어 개수(50의 배수로만 입력가능) > "))
+    sheets = wb.sheets() 
+    mode = Modelistbox.curselection()[0] #단어 모드
+    WordCount = int(WordCountEntry.get()) #단어 개수
     wbwt = xlwt.Workbook(encoding='utf-8')
     ws = []
-
     if mode == 1:
         createKoreanRandomFile(WordCreateFileArea, WordCount, sheets, ws, wbwt)
     elif mode == 2:
@@ -43,7 +42,8 @@ def Main():
     elif mode == 3:
         createFirstEnglishRandomFile(WordCreateFileArea, WordCount, sheets, ws, wbwt)
     else: #섞어섞어
-        createMixRandomFile(WordCreateFileArea, WordCount, sheets, ws, wbwt)
+         createMixRandomFile(WordCreateFileArea, WordCount, sheets, ws, wbwt)
+
 
 def baseSetting(ws, sheetNumber): #시트마다 앞에 생성될 셀들
     ws[sheetNumber].write(0, 0, "20__년 __월 __일", DateStyle)
@@ -113,7 +113,9 @@ def createEnglishRandomFile(WordCreateFileArea, WordCount, sheets, ws, wbwt): #�
             cellSetting(ws, i)
 
     wbwt.save(WordCreateFileArea) #파일 저장
-
+    global stateText
+    stateText = "성공적으로 단어 파일을 만들었습니다."
+    stateLabel.config(text=stateText)
     return
 
 
@@ -162,7 +164,9 @@ def createKoreanRandomFile(WordCreateFileArea, WordCount, sheets, ws, wbwt): #�
             cellSetting(ws, i)
 
     wbwt.save(WordCreateFileArea) #파일 저장
-
+    global stateText
+    stateText = "성공적으로 단어 파일을 만들었습니다."
+    stateLabel.config(text=stateText)
     return
 
 def createMixRandomFile(WordCreateFileArea, WordCount, sheets, ws, wbwt): #한글, 영어 랜덤 
@@ -224,7 +228,9 @@ def createMixRandomFile(WordCreateFileArea, WordCount, sheets, ws, wbwt): #한�
             cellSetting(ws, i)
 
     wbwt.save(WordCreateFileArea) #파일 저장
-
+    global stateText
+    stateText = "성공적으로 단어 파일을 만들었습니다."
+    stateLabel.config(text=stateText)
     return
 
 def createFirstEnglishRandomFile(WordCreateFileArea, WordCount, sheets, ws, wbwt): #영어 첫글자 한글 랜덤 
@@ -274,9 +280,65 @@ def createFirstEnglishRandomFile(WordCreateFileArea, WordCount, sheets, ws, wbwt
             cellSetting(ws, i)
 
     wbwt.save(WordCreateFileArea) #파일 저장
-
+    global stateText
+    stateText = "성공적으로 단어 파일을 만들었습니다."
+    stateLabel.config(text=stateText)
     return
 
+root = tk.Tk() #가장 상위 레벨 창 생성
+root.title("Dlmajang - AutoWordTest") #창 제목
+root.geometry("640x350") #창 크기
+root.resizable(False, False) #창 크기 조절 여부
 
-if __name__ == '__main__':
-    Main() #Main 함수 실행
+emptyLabel = tk.Label(root, text="", width=50)
+emptyLabel.grid(row=8, column=2)
+
+#========
+# 제목
+Titlelabel = tk.Label(root, text="환영합니다. 아래 보이는 빈칸을 모두 채워주셔야 합니다. (xxx.xls만 지원)\n문의 : dlmajang@naver.com", width=50, height=3, fg="black", relief="sunken")
+Titlelabel.grid(row=0, column=2)
+#======== 
+# 불러올 단어파일
+WordOldNameEntryLabel = tk.Label(root, text="Old 파일 경로 :", width=10)
+WordOldNameEntryLabel.grid(row=1, column=0)
+
+WordOldNameEntry=tk.Entry(root, width=50, relief="sunken")
+WordOldNameEntry.insert(0, "저장되어 있는 단어 파일 경로(이름과 확장자 포함)")
+WordOldNameEntry.grid(row=1, column=2)
+#======== 
+# 만들 단어 파일
+WordNewNameEntryLabel = tk.Label(root, text="New 파일 경로 :", width=10)
+WordNewNameEntryLabel.grid(row=2, column=0)
+
+WordNewNameEntry=tk.Entry(root, width=50, relief="sunken")
+WordNewNameEntry.insert(0, "생성시킬 단어 파일 경로(이름과 확장자 포함)")
+WordNewNameEntry.grid(row=2, column=2)
+#========
+# 단어 시험지 모드
+ModelistboxLabel = tk.Label(root, text="Mode", width=10)
+ModelistboxLabel.grid(row=5, column=0)
+
+Modelistbox = tk.Listbox(root, selectmode='browse', width=50, height=0)
+Modelistbox.insert(0, "========선택========")
+Modelistbox.insert(1, "1. 영어빈칸 + 한글해석")
+Modelistbox.insert(2, "2. 영어해석 + 한글빈칸")
+Modelistbox.insert(3, "3. 첫글자 영어 + 한글해석")
+Modelistbox.insert(4, "4. 1+2 섞어서")
+Modelistbox.grid(row=5, column=2)
+#========
+# 단어 개수
+WordCountEntryLabel = tk.Label(root, text="단어 개수\n(50배수)", width=0)
+WordCountEntryLabel.grid(row=6, column=0)
+
+WordCountEntry = tk.Entry(root, width=50, relief="sunken")
+WordCountEntry.insert(0, "단어 개수(50배수)")
+WordCountEntry.grid(row=6, column=2)
+#========
+# 상태 알림
+stateLabel = tk.Label(root, text=stateText, width=50)
+stateLabel.grid(row=7, column=2)
+
+ConvertButton = tk.Button(root, text="Convert", overrelief="solid", width=15, command=Main, repeatdelay=1000, repeatinterval=100)
+ConvertButton.grid(row=10, column=2)
+
+root.mainloop() #창이 종료시까지 반복
