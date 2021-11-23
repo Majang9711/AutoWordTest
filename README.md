@@ -22,6 +22,5 @@ This is because I decided to create a program that makes a word test paper accor
 ## Precautions
 
 - The Excel file extension is...I only support xls. Please be careful when writing a word file and a file name to be created.
-
 - When used in MacOS, it works only when the gatekeeper is turned off and executed due to security policy.
- - The way to turn off the gate keeper is "sudo spctl --master-disable". To turn on the gatekeeper again, change the -disable to -enable.
+  * The way to turn off the gate keeper is "sudo spctl --master-disable". To turn on the gatekeeper again, change the -disable to -enable.
