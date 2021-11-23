@@ -19,6 +19,8 @@ This is because I decided to create a program that makes a word test paper accor
 3. Execute.
 4. Do what the program tells you to do.
 
+## Precautions
 
+The Excel file extension is...I only support xls. Please be careful when writing a word file and a file name to be created.
 
 
